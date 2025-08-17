@@ -105,6 +105,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+	defer db.Close()
 
 	if err := db.Ping(); err != nil {
 		log.Fatal("Не удалось подключиться к базе данных:", err)

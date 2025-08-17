@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -53,7 +54,7 @@ func TestAddGetDelete(t *testing.T) {
 	// проверьте, что значения всех полей в полученном объекте совпадают со значениями полей в переменной parcel
 	p, err := store.Get(id)
 	require.NoError(t, err)
-	require.Equal(t, parcel, p)
+	assert.Equal(t, parcel, p)
 
 	// delete
 	// удалите добавленную посылку, убедитесь в отсутствии ошибки
@@ -63,7 +64,7 @@ func TestAddGetDelete(t *testing.T) {
 
 	//проверка на удаление
 	_, err = store.Get(id)
-	require.Equal(t, err, sql.ErrNoRows)
+	assert.Equal(t, err, sql.ErrNoRows)
 
 }
 
@@ -94,7 +95,7 @@ func TestSetAddress(t *testing.T) {
 	// получите добавленную посылку и убедитесь, что адрес обновился
 	p, err := store.Get(id)
 	require.NoError(t, err)
-	require.Equal(t, newAddress, p.Address)
+	assert.Equal(t, newAddress, p.Address)
 }
 
 // TestSetStatus проверяет обновление статуса
@@ -122,7 +123,7 @@ func TestSetStatus(t *testing.T) {
 	// получите добавленную посылку и убедитесь, что статус обновился
 	p, err := store.Get(id)
 	require.NoError(t, err)
-	require.Equal(t, ParcelStatusSent, p.Status)
+	assert.Equal(t, ParcelStatusSent, p.Status)
 }
 
 // TestGetByClient проверяет получение посылок по идентификатору клиента
@@ -165,15 +166,15 @@ func TestGetByClient(t *testing.T) {
 	// убедитесь в отсутствии ошибки
 	require.NoError(t, err)
 	// убедитесь, что количество полученных посылок совпадает с количеством добавленных
-	require.Len(t, storedParcels, len(parcels))
+	assert.Len(t, storedParcels, len(parcels))
 	// check
 	for _, parcel := range storedParcels {
 		// в parcelMap лежат добавленные посылки, ключ - идентификатор посылки, значение - сама посылка
 		// убедитесь, что все посылки из storedParcels есть в parcelMap
 		p, ok := parcelMap[parcel.Number]
-		require.True(t, ok)
+		assert.True(t, ok)
 		// убедитесь, что значения полей полученных посылок заполнены верно
-		require.Equal(t, p, parcel)
+		assert.Equal(t, p, parcel)
 
 	}
 }
